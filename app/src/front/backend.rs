@@ -3,7 +3,7 @@ use mysql::prelude::*;
 use chrono::{NaiveDate, Local, Datelike};
 
 #[derive(Debug, PartialEq, Eq)]
-struct Friend {
+pub struct Friend {
     id: i16,
     name: Option<String>,
     phonenumber: Option<String>,
@@ -11,8 +11,9 @@ struct Friend {
 }    
 
 
-fn check_birthday(f : Vec<Friend>) {
-
+fn check_birthday(f : Vec<Friend>) -> Vec<Friend>{
+    let mut vec = Vec::<Friend>::new();
+    
     for elem in f {
         let month = Local::now().date_naive().month();
         let day = Local::now().date_naive().day();
@@ -21,11 +22,16 @@ fn check_birthday(f : Vec<Friend>) {
         
         if month == birth_month && day == birth_day {
             println!("HEY! happy birthday! {:?}", elem.name);
+            vec.push(elem);
+        } else {
+            vec.push(elem); // just test 
         }
-    }    
+            
+    }
+    vec
 }
 
-pub fn backend()  -> std::result::Result<(), Box<dyn std::error::Error>>{
+pub fn backend()  -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>>{
     let url = "mysql://root:caio@localhost:3306/amigos";
     let pool = Pool::new(url)?;
 
@@ -38,7 +44,5 @@ pub fn backend()  -> std::result::Result<(), Box<dyn std::error::Error>>{
         },
     )?;
     
-    check_birthday(friends);
-
-    Ok(())
+    Ok(check_birthday(friends))
 }    

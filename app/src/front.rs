@@ -33,7 +33,8 @@ fn button_set() -> Button{
         .build();
 
     button.connect_clicked(|_|{
-        let _ = backend::backend();
+        let data : Vec<backend::Friend> = backend::backend().unwrap();
+        println!("{data:?}");
     });
 
     button
