@@ -1,41 +1,21 @@
 use gtk::prelude::*;
-use gtk::{glib, Application, ApplicationWindow, Button};
-mod backend;
+use gtk::{glib, Application, gio};
+use window::Window;
+mod window;
 
 pub fn app() -> glib::ExitCode {
+
+    gio::resources_register_include!("resource")
+        .expect("Failed.");
+
     let app = Application::builder()
-        .application_id("org.example.HelloWorld")
+        .application_id("org.gtk.amigos")
         .build();
     app.connect_activate(build_ui);
-
     app.run()
 }
 
-fn build_ui(app : &Application) {
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .default_width(320)
-        .default_height(200)
-        .title("Amigos")
-        .child(&button_set())
-        .build();
-    
+fn build_ui(app : &Application) {       
+    let window = Window::new(app);
     window.present();
-}
-
-fn button_set() -> Button{
-    let button = Button::builder()
-        .label("server")
-        .margin_top(12)
-        .margin_bottom(12)
-        .margin_start(12)
-        .margin_end(12)
-        .build();
-
-    button.connect_clicked(|_|{
-        let data : Vec<backend::Friend> = backend::backend().unwrap();
-        println!("{data:?}");
-    });
-
-    button
 }
