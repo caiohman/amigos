@@ -1,14 +1,16 @@
 use glib::subclass::InitializingObject;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
-use gtk::{Button, CompositeTemplate, glib};
+use gtk::{Button, CompositeTemplate, glib, StringList};
 mod backend;
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/resources/window.ui")]
 pub struct Window {
     #[template_child]
-    pub server: TemplateChild<Button>, //name has to be id name in window.ui
+    pub server: TemplateChild<Button>, //name has to be same as id name in window.ui
+    #[template_child]
+    pub friends: TemplateChild<StringList>,
 }   
 
 #[glib::object_subclass]
