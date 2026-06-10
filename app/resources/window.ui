@@ -22,11 +22,7 @@
 		    <object class="GtkDropDown">
 		        <property name="model">
 			    <object class="GtkStringList" id="friends">
-				<items>
-        			    <item translatable="yes">Factory</item>
-        			    <item translatable="yes">Home</item>
-        			    <item translatable="yes">Subway</item>
-      				    </items>
+				<items />
     			    </object>
 			</property>
 	    	    </object>	

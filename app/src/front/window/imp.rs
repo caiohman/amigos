@@ -3,6 +3,7 @@ use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{Button, CompositeTemplate, glib, StringList};
 mod backend;
+use glib::clone;
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/resources/window.ui")]
@@ -31,10 +32,20 @@ impl ObjectSubclass for Window {
 impl ObjectImpl for Window {
     fn constructed(&self) {
         self.parent_constructed();
-        self.server.connect_clicked(|_| {
-            let data : Vec<backend::Friend> = backend::backend().unwrap();
-            println!("{data:?}");
-        });
+        let ad = &self.friends;
+
+        self.server.connect_clicked(clone!(
+            #[weak]
+            ad,    
+            move |_| {
+                let data : Vec<backend::Friend> = backend::backend().unwrap();
+                for elem in data {
+                    if let Some(name) = elem.name {
+                        ad.append(name.as_str());
+                    }
+                }
+            }
+        ));
     }
 }
 

@@ -1,22 +1,15 @@
 use mysql::*;
 use mysql::prelude::*;
 use chrono::{NaiveDate, Local, Datelike};
-use std::process::Command;
+//use std::process::Command;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Friend {
-    id: i16,
-    name: Option<String>,
-    phonenumber: Option<String>,
-    birth: NaiveDate
+    pub id: i16,
+    pub name: Option<String>,
+    pub phonenumber: Option<String>,
+    pub birth: NaiveDate
 }    
-
-// keep to test later 
-fn start_container() {
-    Command::new("podman start a23bc3183d99")
-        .output()
-        .expect("Failed.");
-}
 
 fn check_birthday(f : Vec<Friend>) -> Vec<Friend>{
     let mut vec = Vec::<Friend>::new();
@@ -39,7 +32,6 @@ fn check_birthday(f : Vec<Friend>) -> Vec<Friend>{
 }
 
 pub fn backend()  -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>>{
-    start_container();
     let url = "mysql://root:caio@localhost:3306/amigos";
     let pool = Pool::new(url)?;
 
