@@ -38,11 +38,15 @@ impl ObjectImpl for Window {
             #[weak]
             ad,    
             move |_| {
-                let data : Vec<backend::Friend> = backend::backend().unwrap();
-                for elem in data {
-                    if let Some(name) = elem.name {
-                        ad.append(name.as_str());
+                let result = backend::backend(); 
+                if let Ok(data) = result {
+                    for elem in data {
+                        if let Some(name) = elem.name {
+                            ad.append(name.as_str());
+                        }
                     }
+                } else {
+                    println!("{}", result.unwrap_err());
                 }
             }
         ));
