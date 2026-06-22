@@ -1,10 +1,10 @@
 import 'package:http/http.dart' as http;
-import 'package:mobile/features/models/person.dart';
+import 'package:mobile/features/models/friend.dart';
 import 'dart:convert';
 
 class Api {
 
-  Future<List<Person>> getPerson() async {
+  Future<List<Friend>> getPerson() async {
     try{
       
       final uri = Uri( scheme: 'http', host: '192.168.0.71', port: 8081, path: '/',);
@@ -12,10 +12,10 @@ class Api {
       if (response.statusCode != 200) { throw Exception("Failed"); }
       else { 
         List<dynamic> items = jsonDecode(response.body);
-	List<Person> people = items.map(
-	  (items) => Person.fromJson(items)
+	List<Friend> friends = items.map(
+	  (items) => Friend.fromJson(items)
 	).toList();
-	return people;
+	return friends;
       }
     } catch(err) { rethrow; }
   }

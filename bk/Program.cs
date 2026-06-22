@@ -1,13 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
 var app = builder.Build();
 
-app.MapGet("/", () =>  
-{
-    var people = new [] { 
-        new { Name = "Caio Ohman"},
-        new { Name = "Gael Gaudencio"}
-    };
-    return Results.Json(people);
-});
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run("http://+:8081");

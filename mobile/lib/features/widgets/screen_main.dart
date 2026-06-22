@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/features/widgets/navbar.dart';
 import 'package:mobile/core/services/api.dart';
-import 'package:mobile/features/models/person.dart';
+import 'package:mobile/features/models/friend.dart';
 import 'package:mobile/features/widgets/person_card.dart';
 
 class ScreenMain extends StatefulWidget {
@@ -14,7 +14,7 @@ class ScreenMain extends StatefulWidget {
 class _ScreenMainState extends State<ScreenMain> {
 
   final Api api = Api();
-  List<Person> people = [];
+  List<Friend> friends = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,9 @@ class _ScreenMainState extends State<ScreenMain> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [Expanded(
 	  child: ListView.builder(
-	    itemCount: people.length,
+	    itemCount: friends.length,
 	    itemBuilder: (context, index) {
-	      String text = people[index].name;
+	      String text = friends[index].name;
 	      return  PersonCard(text: text);
 	    }
 	  ),  
@@ -34,7 +34,7 @@ class _ScreenMainState extends State<ScreenMain> {
 	  child: Text("Load", style: TextStyle(color: Colors.white)),
 	  onPressed: () async {
 	    await api.getPerson().then(
-	      (person) => people.addAll(person)
+	      (friend) => friends.addAll(friend)
 	    );
 	    setState(() {});
 	  }
