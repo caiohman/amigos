@@ -24,7 +24,7 @@ namespace bk.Controllers
 	    try{
 	       var connection = new MySqlConnection(myConnectionString);
 	       connection.Open();
-	       var sql = "select * from amigos limit 5";
+	       var sql = "select * from amigos limit 10";
 	       List<Friend> friends = connection.Query<Friend>(sql).ToList();
       	       connection.Close();
 	       return Ok(friends);

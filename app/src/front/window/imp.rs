@@ -2,7 +2,7 @@ use glib::subclass::InitializingObject;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{Button, CompositeTemplate, glib, StringList};
-mod backend;
+mod services;
 use glib::clone;
 
 #[derive(CompositeTemplate, Default)]
@@ -38,7 +38,8 @@ impl ObjectImpl for Window {
             #[weak]
             ad,    
             move |_| {
-                let result = backend::backend(); 
+                // let result = services::backend();
+                let result = services::api();
                 if let Ok(data) = result {
                     for elem in data {
                         if let Some(name) = elem.name {
