@@ -1,7 +1,7 @@
 use glib::subclass::InitializingObject;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
-use gtk::{Button, CompositeTemplate, glib, StringList};
+use gtk::{Button, CompositeTemplate, glib, ListBox, Label};
 mod services;
 use glib::clone;
 
@@ -9,9 +9,9 @@ use glib::clone;
 #[template(resource = "/resources/window.ui")]
 pub struct Window {
     #[template_child]
-    pub server: TemplateChild<Button>, //name has to be same as id name in window.ui
+    pub load: TemplateChild<Button>, //name has to be same as id name in window.ui
     #[template_child]
-    pub friends: TemplateChild<StringList>,
+    pub list: TemplateChild<ListBox>,
 }   
 
 #[glib::object_subclass]
@@ -32,18 +32,19 @@ impl ObjectSubclass for Window {
 impl ObjectImpl for Window {
     fn constructed(&self) {
         self.parent_constructed();
-        let ad = &self.friends;
-
-        self.server.connect_clicked(clone!(
+        let list_box = &self.list;
+        
+        self.load.connect_clicked(clone!(
             #[weak]
-            ad,    
+            list_box,    
             move |_| {
-                // let result = services::backend();
                 let result = services::api();
                 if let Ok(data) = result {
                     for elem in data {
                         if let Some(name) = elem.name {
-                            ad.append(name.as_str());
+                          //println!("{name:?}");
+                          let label :Label = Label::new(Some(&name));
+                          list_box.append(&label);
                         }
                     }
                 } else {

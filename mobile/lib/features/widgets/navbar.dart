@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
-class NavBar extends StatelessWidget implements PreferredSizeWidget{
+class NavBar extends StatefulWidget implements PreferredSizeWidget {
   const NavBar({super.key});
 
   @override
   final preferredSize = const Size.fromHeight(80.0);
+  
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+
+class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +24,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget{
 	  );
 	}	
       ),
+      centerTitle: true,
       title: Row(
 	mainAxisSize: MainAxisSize.min,
 	children: [
@@ -37,6 +45,12 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget{
           ),
 	],
       ),
+      actions: <Widget>[
+        IconButton(
+	  icon: const Icon(Icons.notifications_rounded),
+	  onPressed: () {},
+	),	
+      ],
       backgroundColor: Colors.blue,
     );	
   }

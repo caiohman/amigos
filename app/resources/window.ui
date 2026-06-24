@@ -4,30 +4,49 @@
 	<property name="title">Amigos</property>
 	<child>
 	    <object class="GtkBox">
-	        <property name="orientation">horizontal</property>
+	        <property name="orientation">vertical</property>
 		<property name="margin-top">12</property>
         	<property name="margin-bottom">12</property>
         	<property name="margin-start">12</property>
         	<property name="margin-end">12</property>
 		<property name="spacing">6</property>
-		
 		<child>
-	            <object class="GTkButton" id="server">		
-	               <property name="label">server</property>
-	               <property name="name">server</property>
-	    	    </object>
-        	</child>
-	
-		<child>
-		    <object class="GtkDropDown">
-		        <property name="model">
-			    <object class="GtkStringList" id="friends">
-				<items />
-    			    </object>
-			</property>
-	    	    </object>	
-		</child>
-	    </object>
-	</child>	
+		    <object class="GtkBox">
+                        <property name="orientation">horizontal</property>
+			<property name="margin-top">12</property>
+        		<property name="margin-bottom">12</property>
+			<property name="spacing">220</property>
+			<child>
+	                    <object class="GtkButton" id="load">		
+	                        <property name="label">load</property>
+	               		<property name="name">load</property>
+	    	    	    </object>
+		        </child>
+			<child>
+			    <object class="GtkSearchEntry"></object>
+			</child>
+		    </object>
+                </child>
+	        <child>
+                    <object class="GtkScrolledWindow" id="scroll">
+                        <property name="can_focus">true</property>
+                        <property name="overlay-scrolling">true</property>
+                        <property name="hexpand">true</property>
+                        <property name="vexpand">true</property>
+                        <property name="max-content-width">500</property>
+			<property name="min-content-width">500</property>
+			<property name="min-content-height">200</property>
+                        <property name="max-content-height">400</property>
+                        <property name="propagate-natural-width">true</property>
+                        <property name="hscrollbar-policy">automatic</property>
+		        <property name="vscrollbar-policy">automatic</property>
+		        <child>
+		            <object class="GtkListBox" id="list">
+			    </object>	
+		        </child>
+	            </object>	
+	        </child>
+            </object>
+        </child>
     </template>
 </interface>
