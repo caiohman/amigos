@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'; 
 import 'package:mobile/features/widgets/social.dart';
+import 'package:mobile/features/widgets/focus_dialog.dart';
 
 class PersonCard extends StatefulWidget {
   final String text;
@@ -25,9 +26,7 @@ class _PersonCardState extends State<PersonCard> {
       margin: EdgeInsets.all(10.0),
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
-        onTap: () { setState(() {
-	  });
-	},
+        onTap: () => showDialog(context: context, builder: (context) => FocusDialog()),
         child: Padding (
 	  padding: const EdgeInsets.all(16.0),
 	  child: Row(

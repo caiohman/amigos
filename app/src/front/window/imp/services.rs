@@ -26,7 +26,7 @@ fn check_container() -> bool{
 }
 
 #[tokio::main]
-pub async fn api() -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>> {
+pub async fn get_friends() -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>> {
     if check_container() {
         let response : Vec<Friend> = reqwest::get("http:localhost:8081/")
             .await?
@@ -36,3 +36,17 @@ pub async fn api() -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error
     }
     Err("podman mysql container not found".into())
 }
+
+#[tokio::main]
+pub async fn get_events() -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>> {
+    if check_container() {
+        let response : Vec<Friend> = reqwest::get("http:localhost:8081/birthday")
+            .await?
+            .json()
+            .await?;
+       return Ok(response);
+    }
+    Err("podman mysql container not found".into())
+}
+
+

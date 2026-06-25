@@ -15,12 +15,19 @@
                         <property name="orientation">horizontal</property>
 			<property name="margin-top">12</property>
         		<property name="margin-bottom">12</property>
-			<property name="spacing">220</property>
 			<child>
-	                    <object class="GtkButton" id="load">		
-	                        <property name="label">load</property>
-	               		<property name="name">load</property>
-	    	    	    </object>
+	                    <object class="GtkButton" id="home">		
+	                        <property name="label">home</property>
+	               		<property name="name">home</property>
+			    </object>
+		        </child>
+	                <child>
+	                    <object class="GtkButton" id="event">		
+	                        <property name="label">event</property>
+	               		<property name="name">event</property>
+	               		<property name="margin-start">20</property>
+	               		<property name="margin-end">130</property>
+			    </object>
 		        </child>
 			<child>
 			    <object class="GtkSearchEntry"></object>

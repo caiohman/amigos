@@ -9,7 +9,10 @@ use glib::clone;
 #[template(resource = "/resources/window.ui")]
 pub struct Window {
     #[template_child]
-    pub load: TemplateChild<Button>, //name has to be same as id name in window.ui
+    pub home: TemplateChild<Button>, //name has to be same as id name in window.ui
+    #[template_child]
+    pub event: TemplateChild<Button>, 
+    
     #[template_child]
     pub list: TemplateChild<ListBox>,
 }   
@@ -34,15 +37,33 @@ impl ObjectImpl for Window {
         self.parent_constructed();
         let list_box = &self.list;
         
-        self.load.connect_clicked(clone!(
+        self.home.connect_clicked(clone!(
             #[weak]
             list_box,    
             move |_| {
-                let result = services::api();
+                let result = services::get_friends();
                 if let Ok(data) = result {
+                    list_box.remove_all();
                     for elem in data {
                         if let Some(name) = elem.name {
-                          //println!("{name:?}");
+                          let label :Label = Label::new(Some(&name));
+                          list_box.append(&label);
+                        }
+                    }
+                } else {
+                    println!("{}", result.unwrap_err());
+                }
+            }
+        ));
+        self.event.connect_clicked(clone!(
+            #[weak]
+            list_box,    
+            move |_| {
+                let result = services::get_events();
+                if let Ok(data) = result {
+                    list_box.remove_all();
+                    for elem in data {
+                        if let Some(name) = elem.name {
                           let label :Label = Label::new(Some(&name));
                           list_box.append(&label);
                         }

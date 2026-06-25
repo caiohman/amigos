@@ -51,6 +51,12 @@ class _NavBarState extends State<NavBar> {
 	  onPressed: () {},
 	),	
       ],
+      bottom: TabBar(
+	tabs: <Widget>[
+	 Tab(icon: Icon(Icons.home)),
+	 Tab(icon: Icon(Icons.calendar_month)),
+	]
+      ),
       backgroundColor: Colors.blue,
     );	
   }
