@@ -9,52 +9,39 @@ namespace bk.Controllers
     public class FriendController : ControllerBase
     {
         private readonly IConfiguration _config;
+	private MySqlConnection _connection;
 
         public FriendController(IConfiguration config)
         {
-            _config = config; 	    
+            _config = config;
+	    _connection = connection();
         }
+
+	private MySqlConnection connection() 
+	{
+	 string myConnectionString = _config.GetConnectionString("Connection") ?? "server=localhost;uid=root;pwd=caio;database=amigos";
+
+         var connection = new MySqlConnection(myConnectionString);
+         connection.Open();
+         return connection;
+	}
 
 
         [HttpGet]
         public ActionResult<List<Friend>> GetAllFriends()
-        {
-	    string myConnectionString = _config.GetConnectionString("Connection") ?? "server=localhost;uid=root;pwd=caio;database=amigos";
-
-	    try{
-	       var connection = new MySqlConnection(myConnectionString);
-	       connection.Open();
-	       var sql = "select * from amigos limit 68";
-	       List<Friend> friends = connection.Query<Friend>(sql).ToList();
-      	       connection.Close();
-	       return Ok(friends);
-	    }
-	    catch (MySqlException ex)
-	    {
-	        Console.WriteLine(ex);	
-	        return NotFound();
-	    }	
+        {	
+	  	
+	  var sql = "select * from amigos limit 68";
+	  List<Friend> friends = _connection.Query<Friend>(sql).ToList();
+	  return Ok(friends);
         }
 
 	[HttpGet("birthday/")]
 	public ActionResult<List<Friend>> getBirthday()
 	{
-	     string myConnectionString = _config.GetConnectionString("Connection") ?? "server=localhost;uid=root;pwd=caio;database=amigos";
-
-	    try{
-	       var connection = new MySqlConnection(myConnectionString);
-	       connection.Open();
 	       var sql = "select * from amigos where month(birth) = month(now()) and day(birth) >= day(now())";
-	       List<Friend> friends = connection.Query<Friend>(sql).ToList();
-      	       connection.Close();
+	       List<Friend> friends = _connection.Query<Friend>(sql).ToList();
 	       return Ok(friends);
-	    }
-	    catch (MySqlException ex)
-	    {
-	        Console.WriteLine(ex);	
-	        return NotFound();
-	    }	   	
 	}
-	
     }
 }
