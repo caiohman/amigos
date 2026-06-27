@@ -31,7 +31,7 @@ namespace bk.Controllers
         public ActionResult<List<Friend>> GetAllFriends()
         {	
 	  	
-	  var sql = "select * from amigos limit 68";
+	  var sql = "select * from amigos where amigos.birth is not null order by(name)";
 	  List<Friend> friends = _connection.Query<Friend>(sql).ToList();
 	  return Ok(friends);
         }
@@ -39,7 +39,7 @@ namespace bk.Controllers
 	[HttpGet("birthday/")]
 	public ActionResult<List<Friend>> getBirthday()
 	{
-	       var sql = "select * from amigos where month(birth) = month(now()) and day(birth) >= day(now())";
+	       var sql = "select * from amigos where amigos.birth is not null and month(birth) = month(now()) and day(birth) >= day(now()) order by(birth)";
 	       List<Friend> friends = _connection.Query<Friend>(sql).ToList();
 	       return Ok(friends);
 	}
