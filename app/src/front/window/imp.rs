@@ -3,16 +3,16 @@ use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{Button, CompositeTemplate, glib, ListBox, Label};
 mod services;
+use crate::front::window::imp::services::Services;
 use glib::clone;
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/resources/window.ui")]
 pub struct Window {
     #[template_child]
-    pub home: TemplateChild<Button>, //name has to be same as id name in window.ui
+    pub home: TemplateChild<Button>,  //name has to be same as id name in window.ui
     #[template_child]
     pub event: TemplateChild<Button>, 
-    
     #[template_child]
     pub list: TemplateChild<ListBox>,
 }   
@@ -41,7 +41,8 @@ impl ObjectImpl for Window {
             #[weak]
             list_box,    
             move |_| {
-                let result = services::get_friends();
+                let mut services = Services::new();
+                let result = services.get_friends();
                 if let Ok(data) = result {
                     list_box.remove_all();
                     for elem in data {
@@ -59,7 +60,8 @@ impl ObjectImpl for Window {
             #[weak]
             list_box,    
             move |_| {
-                let result = services::get_events();
+                let mut services = Services::new();
+                let result = services.get_events();
                 if let Ok(data) = result {
                     list_box.remove_all();
                     for elem in data {

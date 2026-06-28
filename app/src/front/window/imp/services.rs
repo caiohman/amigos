@@ -1,6 +1,5 @@
-use std::process::Command;
 use tokio;
-use reqwest;
+use reqwest::Client;
 use serde;
 
 #[derive(Debug, PartialEq, Eq, serde::Deserialize)]
@@ -11,42 +10,35 @@ pub struct Friend {
     pub birth: Option<String>
 }    
 
-fn check_container() -> bool{
-    let out = Command::new("podman")
-        .arg("ps")
-        .output()
-        .expect("Failed.");
-    let str = String::from_utf8(out.stdout);
-    
-    if str.is_err() == false {
-       str.unwrap().contains("mysql") 
-    } else {
-        false
-    }
+#[derive(Debug)]
+pub struct Services {
+  client: Client,
 }
 
-#[tokio::main]
-pub async fn get_friends() -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>> {
-    if check_container() {
-        let response : Vec<Friend> = reqwest::get("http:localhost:8081/")
+
+impl Services {
+
+    pub fn new() -> Self {
+        Self { client: reqwest::Client::new() }
+    }
+
+    #[tokio::main]
+    pub async fn get_friends(&mut self) -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>> {
+        let response : Vec<Friend> = self.client.get("http:localhost:8081/").send()
             .await?
             .json()
             .await?;
-       return Ok(response);
+         return Ok(response);
     }
-    Err("podman mysql container not found".into())
-}
 
-#[tokio::main]
-pub async fn get_events() -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>> {
-    if check_container() {
-        let response : Vec<Friend> = reqwest::get("http:localhost:8081/birthday")
+    #[tokio::main]
+    pub async fn get_events(&mut self) -> std::result::Result<Vec<Friend>, Box<dyn std::error::Error>> {
+        let response : Vec<Friend> = self.client.get("http:localhost:8081/birthday").send()
             .await?
             .json()
             .await?;
-       return Ok(response);
+        return Ok(response);
     }
-    Err("podman mysql container not found".into())
 }
 
 
